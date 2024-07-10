@@ -117,6 +117,9 @@ jobs:
           chmod +x $GITHUB_WORKSPACE/scripts/*
           $GITHUB_WORKSPACE/scripts/preset-terminal-tools.sh
           export CONFIG_PACKAGES=$(cat $GITHUB_WORKSPACE/config/packages.config | tr -s "\n" " ")
+          # workaround for target platforms that doesn't have TARGZ enabled by default
+          echo "CONFIG_USES_TARGZ=y" >> .config
+          echo "CONFIG_TARGET_ROOTFS_TARGZ=y" >> .config
           make image PACKAGES="$CONFIG_PACKAGES" FILES="files"
           cp -rf bin/targets/$DEVICE_TARGET/$DEVICE_SUBTARGET/*rootfs.tar.gz $GITHUB_WORKSPACE
                   
